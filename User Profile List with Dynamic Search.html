@@ -1,17 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Template</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
-  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel">
-    // Your  code will go here
-  </script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template</title>
+
+  <style>
+    .seachSec{
+      text-align: center;
+      padding: 10px;
+      background-color: rgba(0, 255, 255, 0.232);
+    }
+
+    .profiles{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+    }
+    .profile-card {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      width: 300px;
+      margin: 20px auto;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+    }
+
+    .profile-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .profile-info {
+      font-size: 1.1rem;
+    }
+
+    .profile-info p {
+      margin: 10px 0;
+    }
+
+    .profile-info strong {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+<script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+<script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  // Your  code will go here
+  function UserProfile(props) {
+    return (
+      <div className="profile-card">
+        <h2>User Profile</h2>
+        <div className="profile-info">
+          <p><strong>ID:</strong> {props.id}</p>
+          <p><strong>Name:</strong> {props.name}</p>
+          <p><strong>Age:</strong> {props.age}</p>
+          <p><strong>Location:</strong> {props.location}</p>
+          <p><strong>Bio:</strong> {props.bio}</p>
+        </div>
+      </div>
+    )
+  }
+
+  function App() {
+    let profileList = [
+      {
+        "id": 1,
+        "name": "Aarav Patel",
+        "age": 28,
+        "location": "Mumbai",
+        "bio": "Software Engineer with a passion for coding and problem-solving."
+      },
+      {
+        "id": 2,
+        "name": "Isha Gupta",
+        "age": 35,
+        "location": "Delhi",
+        "bio": "Marketing professional with expertise in digital marketing strategies."
+      },
+      {
+        "id": 3,
+        "name": "Rohan Sharma",
+        "age": 30,
+        "location": "Bangalore",
+        "bio": "Entrepreneur and startup enthusiast. Co-founder of a tech startup."
+      },
+      {
+        "id": 4,
+        "name": "Priya Singh",
+        "age": 26,
+        "location": "Pune",
+        "bio": "Graphic designer with a creative mindset and a knack for visual storytelling."
+      },
+      {
+    "id": 5,
+    "name": "Aditi Desai",
+    "age": 32,
+    "location": "Ahmedabad",
+    "bio": "Financial analyst specializing in risk management and investment strategies."
+  },
+  {
+    "id": 6,
+    "name": "Vikram Singhania",
+    "age": 40,
+    "location": "Jaipur",
+    "bio": "Business owner and philanthropist, dedicated to community development projects."
+  },
+  {
+    "id": 7,
+    "name": "Ananya Rao",
+    "age": 27,
+    "location": "Hyderabad",
+    "bio": "Research scientist with a focus on biotechnology and genetic engineering."
+  },
+  {
+    "id": 8,
+    "name": "Arjun Mehta",
+    "age": 29,
+    "location": "Chennai",
+    "bio": "Software developer passionate about building scalable and efficient applications."
+  },
+  {
+    "id": 9,
+    "name": "Kavita Reddy",
+    "age": 33,
+    "location": "Bengaluru",
+    "bio": "HR professional with extensive experience in talent acquisition and employee relations."
+  },
+  {
+    "id": 10,
+    "name": "Rajesh Kapoor",
+    "age": 45,
+    "location": "Kolkata",
+    "bio": "Senior architect specializing in sustainable urban design and green building solutions."
+  },
+  {
+    "id": 11,
+    "name": "Neha Sharma",
+    "age": 31,
+    "location": "Chandigarh",
+    "bio": "Marketing manager with a track record of driving successful campaigns and brand activations."
+  },
+  {
+    "id": 12,
+    "name": "Vivek Khanna",
+    "age": 36,
+    "location": "Lucknow",
+    "bio": "Education consultant dedicated to providing access to quality education for all."
+  },
+  {
+    "id": 13,
+    "name": "Preeti Malhotra",
+    "age": 28,
+    "location": "Surat",
+    "bio": "Fashion designer known for innovative designs and attention to detail."
+  },
+  {
+    "id": 14,
+    "name": "Deepak Joshi",
+    "age": 34,
+    "location": "Indore",
+    "bio": "Financial advisor helping individuals and businesses achieve their financial goals."
+  }
+    ]
+    const [userProfileListFilter, setuserProfileListFilter] = React.useState(profileList);
+    const [userProfileList, setuserProfileList] = React.useState(profileList);
+
+    React.useEffect(() => {
+      // setuserProfileListFilter();
+    }, [userProfileListFilter])
+
+    function filterUser(e) {
+      console.log(e.target.value)
+      if (e.target.value == "") {
+        setuserProfileListFilter(userProfileList);
+        console.log(userProfileList);
+      } else {
+        let newList = userProfileList.filter((itm) => {
+          console.log(itm.name);
+          console.log(itm.name.toLowerCase().includes(e.target.value.toLowerCase()));
+          console.log(e.target.value);
+          if (itm.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+            return true
+          } else {
+            return false
+          }
+        })
+        setuserProfileListFilter(newList);
+        console.log(newList);
+      }
+
+
+    }
+
+    return (<main>
+      <div className="seachSec">
+        <h2>Search User</h2>
+        <input type="search" placeholder="Search User" onChange={filterUser} />{<p>Total Result: {userProfileListFilter.length}</p>}
+      </div>
+      <div className="profiles">
+      {userProfileListFilter.map((itm) => {
+        return <UserProfile key={itm.id} id={itm.id} name={itm.name} age={itm.age} location={itm.location} bio={itm.bio} />
+      })}
+      </div>
+
+    </main>)
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+
+    <style>
+      main{
+        margin: 30px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+      main>div{
+        min-width: 500px;
+        padding: 30px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        text-align: center;
+        border-radius: 10px;
+        background: linear-gradient(140deg, yellowgreen 0%, #BC70A4 50%, #BFD641 75%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+    function GreetingCard(props){
+
+      return (<div className="GreetingCard">
+        <h2>{props.greeting}</h2> 
+        <h3>{props.name}!</h3>
+      </div>)
+    }
+    function App(){
+      let greeList = [
+  {
+    "ID": 1,
+    "Greeting": "Happy birthday",
+    "Name": "Aarav"
+  },
+  {
+    "ID": 2,
+    "Greeting": "Happy anniversary",
+    "Name": "Bhavna"
+  },
+  {
+    "ID": 3,
+    "Greeting": "Best wishes",
+    "Name": "Chetan"
+  },
+  {
+    "ID": 4,
+    "Greeting": "Congratulations",
+    "Name": "Divya"
+  },
+  {
+    "ID": 5,
+    "Greeting": "Good luck",
+    "Name": "Esha"
+  },
+  {
+    "ID": 6,
+    "Greeting": "Joyful celebrations",
+    "Name": "Firoz"
+  },
+  {
+    "ID": 7,
+    "Greeting": "Warm regards",
+    "Name": "Gauri"
+  },
+  {
+    "ID": 8,
+    "Greeting": "Many happy returns",
+    "Name": "Hari"
+  },
+  {
+    "ID": 9,
+    "Greeting": "Season's greetings",
+    "Name": "Ishaan"
+  },
+  {
+    "ID": 10,
+    "Greeting": "Wishing you happiness",
+    "Name": "Jaya"
+  }
+]
+
+      const [greetingList, setgreetingList] = React.useState(greeList);
+      return (<main>
+        {greetingList.map((itm)=>{
+          return <GreetingCard key={itm.ID} greeting={itm.Greeting} name={itm.Name}/>
+        })}
+      </main>);
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+  </script>
+</html>

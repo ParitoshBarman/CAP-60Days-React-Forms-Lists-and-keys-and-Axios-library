@@ -1,19 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Template</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
-  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script type="text/babel">
 
-    // Your  code will go here
-  </script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template</title>
+  <style>
+    main{
+      max-width: 600px;
+      margin: auto;
+      margin-top: 50px;
+      text-align: center;
+    }
+    .ShowAllTasks{
+      width: 100%;
+      margin: auto;
+      margin-top: 50px;
+    }
+
+    table{
+      border: 1px solid gray;
+      padding: 10px;
+      
+    }
+    tr{
+      padding: 10px;
+    }
+    td{
+      border: 1px solid gray;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+<script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+<script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script type="text/babel">
+
+  // Your  code will go here
+
+  function ShowAllTasks(props) {
+    return (<table className="ShowAllTasks">
+      <thead>
+        <tr>
+          <th>Sl No.</th>
+          <th>Title</th>
+          <th>AssignedTo</th>
+          <th>Completed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.listData.map((itm, indx) => {
+          return (<tr key={itm.id}>
+            <td>{indx+1}</td>
+            <td>{itm.title}</td>
+            <td>{itm.assignedTo}</td>
+            <td>{itm.completed?<span style={{color:"green",border:"1px solid green"}}>Done</span>:<span style={{color:"red",border:"1px solid red",padding:"5px",margin:"10px"}}>Not</span>}</td>
+
+          </tr>);
+        })}
+      </tbody>
+    </table>)
+  }
+
+
+  function App() {
+    const [Error, setError] = React.useState([]);
+    const [Loading, setLoading] = React.useState([]);
+    const [tasks, setTasks] = React.useState([]);
+    const [formState, setFormState] = React.useState({
+      title: "",
+      completed: false,
+      assignedTo: "",
+    });
+
+    function submitForm(e) {
+      e.preventDefault()
+      console.log(document.getElementById("title").value)
+      console.log(document.getElementById("assignee").value)
+      axios
+        .post("http://localhost:3000/todos", { title: document.getElementById("title").value, completed: false, assignedTo: document.getElementById("assignee").value })
+        .then((response) => {
+          // Fetch tasks again to refresh the list
+          fetchData();
+          setFormState({ title: "", completed: false, assignedTo: "" });
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+          setError(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        })
+    }
+
+    function fetchData() {
+      axios
+        .get("http://localhost:3000/todos")
+        .then((response) => {
+          setTasks(response.data);
+          setError(false); // Clear any previous errors
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the tasks", error);
+          setError(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+
+    React.useEffect(()=>{
+      fetchData();
+    }, [])
+    return (
+      <main>
+        <form onSubmit={submitForm}>
+          <input type="text" name="title" id="title" placeholder="Title" />
+          <input type="text" name="assignee" id="assignee" placeholder="Assignee" />
+          <button type="submit">Submit</button>
+        </form>
+
+
+        <ShowAllTasks listData={tasks} />
+      </main>);
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+
+</script>
+
 </html>

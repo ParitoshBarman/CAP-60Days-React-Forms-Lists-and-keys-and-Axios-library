@@ -30,6 +30,19 @@
       border: 1px solid gray;
       padding: 8px;
     }
+
+    .deleteStyle{
+      color: red;
+      padding: 5px;
+      border: 1px solid red;
+      cursor: pointer;
+    }
+    .updateStyle{
+      color: green;
+      padding: 5px;
+      border: 1px solid green;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -53,6 +66,8 @@
           <th>Title</th>
           <th>AssignedTo</th>
           <th>Completed</th>
+          <th>Complete Status</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -62,6 +77,9 @@
             <td>{itm.title}</td>
             <td>{itm.assignedTo}</td>
             <td>{itm.completed?<span style={{color:"green",border:"1px solid green"}}>Done</span>:<span style={{color:"red",border:"1px solid red",padding:"5px",margin:"10px"}}>Not</span>}</td>
+            <td><button onClick={props.updateFunc} className="updateStyle" data-updateid={itm.id} data-completestatus={itm.completed}>Update</button></td>
+            <td><button onClick={props.deleteData} className="deleteStyle" data-deleteid={itm.id}>Delete</button></td>
+            
 
           </tr>);
         })}
@@ -117,6 +135,75 @@
         });
     }
 
+    function deleteData(e){
+      console.log(e.target.getAttribute("data-deleteid"));
+      axios.delete(`http://localhost:3000/todos/${e.target.getAttribute("data-deleteid")}`)
+      .then((res)=>{
+        fetchData();
+      })
+      .catch((err)=>{
+        console.error("There was an error updating the task", err);
+        setError(false);
+      })
+      .finally(()=>{
+        setLoading(false);
+      })
+      
+    }
+
+    function updateFunc(e){
+      console.log(e.target.getAttribute("data-updateid"));
+      console.log(e.target.getAttribute("data-completestatus"));
+      console.log(JSON.parse(e.target.getAttribute("data-completestatus")))
+      console.log(typeof JSON.parse(e.target.getAttribute("data-completestatus")));
+      axios
+      .patch(`http://localhost:3000/todos/${e.target.getAttribute("data-updateid")}`, {completed:!JSON.parse(e.target.getAttribute("data-completestatus"))})
+      .then((res)=>{
+        fetchData();
+      })
+      .catch((err)=>{
+        console.error("There was an error updating the task", err);
+        setError(false);
+      })
+      .finally(()=>{
+        setLoading(false);
+      })
+
+    }
+
+    function Getalltasks(){
+      fetchData();
+    }
+
+    function Showincompletetasks(){
+      // fetchData();
+      let newlist = tasks.filter((itm)=>{
+        if(itm.completed==false){
+          return true;
+        }
+      })
+
+      console.log("Incomplite:")
+      console.log(newlist)
+
+      setTasks(newlist);
+    }
+
+    function filterbyassignee(e){
+      console.log(e.target.value)
+      console.log(e.key)
+      if(e.key==="Enter"){
+        console.log("Submited")
+        let newlist = tasks.filter((itm)=>{
+        if(itm.assignedTo.includes(e.target.value)){
+          return true;
+        }
+      })
+
+      setTasks(newlist);
+      }
+    }
+
     React.useEffect(()=>{
       fetchData();
     }, [])
@@ -126,10 +213,18 @@
           <input type="text" name="title" id="title" placeholder="Title" />
           <input type="text" name="assignee" id="assignee" placeholder="Assignee" />
           <button type="submit">Submit</button>
+          
         </form>
 
+        <div className="operationsec">
+          <br/>
+          <button onClick={Getalltasks}>Get all tasks</button>
+          <button onClick={Showincompletetasks}>Show incomplete tasks</button>
+          <input onKeyUp={filterbyassignee} placeholder="Filter Tasks by Assignee"/>
+          </div>
 
-        <ShowAllTasks listData={tasks} />
+
+        <ShowAllTasks listData={tasks} deleteData={deleteData} updateFunc={updateFunc}/>
       </main>);
   }
 
